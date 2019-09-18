@@ -99,15 +99,22 @@ defmodule Ueberauth.Strategy.Apple do
   @doc """
   Fetches the fields to populate the info section of the `Ueberauth.Auth` struct.
   """
-  def info(conn) do
-    user = conn.private.apple_user
-    name = user["name"]
+  def info(%Plug.Conn{params: %{"user" => userblob}} = conn) do
+    case Poison.decode(userblob) do
+      {:ok, user} ->
+        %Info{
+          email: user["email"],
+          first_name: user["name"]["firstName"],
+          last_name: user["name"]["lastName"]
+        }
 
-    %Info{
-      email: user["email"],
-      first_name: name && name["firstName"],
-      last_name: name && name["lastName"]
-    }
+      {:error, message} ->
+        %Info{}
+    end
+  end
+
+  def info(conn) do
+    %Info{}
   end
 
   @doc """
