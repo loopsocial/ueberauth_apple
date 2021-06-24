@@ -1,6 +1,6 @@
 defmodule Ueberauth.Strategy.Apple do
   @moduledoc """
-  Google Strategy for Überauth.
+  Apple Strategy for Überauth.
   """
 
   use Ueberauth.Strategy, uid_field: :uid, default_scope: "name email"
@@ -111,7 +111,7 @@ defmodule Ueberauth.Strategy.Apple do
   end
 
   @doc """
-  Stores the raw information (including the token) obtained from the google callback.
+  Stores the raw information (including the token) obtained from the apple callback.
   """
   def extra(conn) do
     %Extra{
